@@ -1,0 +1,395 @@
+/* ═══════════════════════════════════════════════════════════════
+   THE EPICUREAN PORTFOLIO — Design System
+   A luxury restaurant menu experience for a developer's portfolio
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Design Tokens ── */
+:root {
+  /* Surface Colors */
+  --color-midnight:       #0D0D08;
+  --color-leather:        #1A1810;
+  --color-leather-light:  #2A2820;
+  --color-burgundy:       #2D0B0B;
+  --color-burgundy-deep:  #1A0505;
+
+  /* Gold Palette */
+  --color-gold:           #D4AF37;
+  --color-gold-light:     #F9E498;
+  --color-gold-dark:      #B8860B;
+  --color-gold-bronze:    #8B6914;
+  --color-gold-shine:     #FFE4A0;
+
+  /* Parchment/Paper */
+  --color-parchment:      #F0E6D0;
+  --color-parchment-dark: #E8DCC4;
+  --color-parchment-warm: #EDE0C8;
+  --color-ivory:          #FAF5EB;
+  --color-cream:          #F5EFE0;
+
+  /* Text */
+  --color-ink:            #1C1C18;
+  --color-ink-light:      #3A3832;
+  --color-ink-muted:      #6B6558;
+  --color-wine-text:      #4A0E0E;
+
+  /* Typography */
+  --font-display:   'Playfair Display', serif;
+  --font-display-sc: 'Playfair Display SC', serif;
+  --font-body:      'EB Garamond', serif;
+  --font-blackletter: 'UnifrakturMaguntia', cursive;
+  --font-script:    'Pinyon Script', cursive;
+
+  /* Spacing (generous, luxurious) */
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  2rem;
+  --space-lg:  4rem;
+  --space-xl:  6rem;
+  --space-2xl: 8rem;
+
+  /* Transitions */
+  --ease-elegant: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-slow: 600ms;
+  --duration-normal: 300ms;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-midnight);
+  color: var(--color-parchment);
+  font-family: var(--font-body);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Gold Foil Text Effect ── */
+.gold-foil {
+  background: linear-gradient(
+    135deg,
+    var(--color-gold-dark) 0%,
+    var(--color-gold) 25%,
+    var(--color-gold-light) 50%,
+    var(--color-gold) 75%,
+    var(--color-gold-dark) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 4s ease-in-out infinite;
+}
+
+@keyframes goldShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ── Gold Emboss Effect ── */
+.gold-emboss {
+  color: var(--color-gold);
+  text-shadow:
+    0 1px 0 var(--color-gold-bronze),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Typography Classes ── */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-display-sc {
+  font-family: var(--font-display-sc);
+  letter-spacing: 0.2em;
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-blackletter {
+  font-family: var(--font-blackletter);
+}
+
+.font-script {
+  font-family: var(--font-script);
+}
+
+/* ── Page Surface Styles ── */
+.surface-parchment {
+  background-color: var(--color-parchment);
+  background-image: url('/textures/parchment.png');
+  background-size: cover;
+  background-blend-mode: multiply;
+  color: var(--color-ink);
+}
+
+.surface-leather {
+  background-color: var(--color-leather);
+  background-image: url('/textures/leather.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  color: var(--color-gold);
+}
+
+/* ── Grain Overlay ── */
+.grain-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* ── Vignette Effect ── */
+.vignette::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+}
+
+/* ── Loading Screen ── */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
+  background: var(--color-midnight);
+  transition: opacity 0.8s var(--ease-elegant);
+}
+
+.loading-screen.loaded {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Ornamental Border ── */
+.ornamental-border {
+  border: 1px solid var(--color-gold);
+  box-shadow:
+    inset 0 0 0 3px transparent,
+    inset 0 0 0 4px var(--color-gold-dark);
+  position: relative;
+}
+
+.ornamental-border::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--color-gold);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ── UI Overlay ── */
+.ui-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
+.ui-overlay > * {
+  pointer-events: auto;
+}
+
+/* ── Navigation Shell & Dots ── */
+.nav-shell {
+  transition: opacity 0.5s var(--ease-elegant);
+  transform: translateY(1.5rem); /* Lower the pill bar significantly */
+}
+
+.nav-shell.hidden {
+  opacity: 0;
+  /* Removed pointer-events: none so it can still detect hovers! */
+}
+
+.nav-shell.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav-dots {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 1.2rem;
+  background: rgba(13, 13, 8, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 999px;
+}
+
+.nav-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--color-gold);
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-elegant);
+  padding: 0;
+}
+
+.nav-dot:hover {
+  background: rgba(212, 175, 55, 0.4);
+  transform: scale(1.2);
+}
+
+.nav-dot.active {
+  background: var(--color-gold);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+}
+
+.table-toggle {
+  background: rgba(26, 24, 16, 0.6);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  color: var(--color-gold);
+  font-family: var(--font-body);
+  font-weight: 700;
+  padding: 0.4rem 1.2rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-elegant);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-left: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.table-toggle:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--color-gold);
+  transform: translateY(-1px);
+}
+
+.table-toggle.active {
+  background: var(--color-gold);
+  color: var(--color-midnight);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+}
+
+/* ── Page Turn Hint ── */
+.turn-hint {
+  font-family: var(--font-display-sc);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--color-gold);
+  opacity: 0.6;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  animation: hintPulse 2s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+/* ── Canvas Container ── */
+.canvas-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* ── Background Atmosphere ── */
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse at 50% 55%,
+    #1a1810 0%,
+    #0d0d08 80%,
+    #050504 100%
+  );
+}
+
+/* ── Page Content Styles (for HTML-rendered page textures) ── */
+.page-content {
+  width: 100%;
+  height: 100%;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  font-family: var(--font-display-sc);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 2rem;
+}
+
+.section-label {
+  font-family: var(--font-display-sc);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-wine-text);
+  margin-bottom: 0.75rem;
+}
+
+.leader-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.leader-line::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px dotted var(--color-ink-muted);
+  margin-bottom: 0.25em;
+}
+
+.leader-line-value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-wine-text);
+  white-space: nowrap;
+}
