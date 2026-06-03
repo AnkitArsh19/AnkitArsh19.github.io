@@ -1,6 +1,6 @@
 import { Center, useGLTF } from '@react-three/drei';
 import React, { useEffect, useRef, useState } from 'react';
-import { setPokeballHovered } from '../audio';
+import { setPokeballHovered, playPokeballClick } from '../audio';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -76,7 +76,12 @@ export function Pokeball(props) {
       // Add interaction events!
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
       onPointerOut={() => setHovered(false)}
-      onClick={() => window.open('https://ankitarsh.me/pokemon', '_blank')}
+      onClick={() => {
+        // Play the click sound and wait for it to finish before opening the link
+        playPokeballClick(() => {
+          window.open('https://ankitarsh.me/pokemon', '_blank');
+        });
+      }}
     >
       {/* Nested group for animating so we don't overwrite the base rotation from Experience.jsx */}
       <group ref={jiggleGroup}>

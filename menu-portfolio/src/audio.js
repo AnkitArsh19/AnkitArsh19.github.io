@@ -74,3 +74,19 @@ export const setPokeballHovered = (isHovered) => {
     clearTimeout(pokeballTimeout);
   }
 };
+
+export const playPokeballClick = (onComplete) => {
+  // Use a separate audio instance to avoid interrupting the hover loop state
+  const clickAudio = new Audio('/music/pokeball.mp3');
+  clickAudio.volume = VOLUMES.pokeball;
+  
+  // Call onComplete when the sound finishes
+  clickAudio.onended = () => {
+    if (onComplete) onComplete();
+  };
+  
+  // If the browser blocks it for any reason, just open immediately
+  clickAudio.play().catch(() => {
+    if (onComplete) onComplete();
+  });
+};

@@ -94,6 +94,22 @@ function App() {
   const [, setPhotoIndex] = useAtom(photoIndexAtom);
   const [started, setStarted] = useState(false);
 
+  // Handle tab visibility to pause/play background audio
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        bgmAudio.pause();
+      } else {
+        if (started) {
+          bgmAudio.play().catch(() => {});
+        }
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [started]);
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
