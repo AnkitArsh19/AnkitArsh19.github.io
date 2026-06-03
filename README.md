@@ -11,7 +11,7 @@ Instead of a standard scrolling website, this portfolio is a fully interactive 3
 The centerpiece is a leather-bound menu resting on a dark wooden table under a warm, dynamic spotlight. 
 
 **The 3D Page Flip Physics:**
-The book isn't just an animation—it's a mathematical physics simulation. 
+The book isn't just an animation, it's a mathematical physics simulation. 
 - The pages are built on a **30-bone SkinnedMesh rig**. 
 - Each bone controls a specific segment of the page geometry. 
 - When a page flips, the code rotates these bones in a precise sequence from the spine outward. This creates the realistic physical curl, tension, and bending of heavy paper.
