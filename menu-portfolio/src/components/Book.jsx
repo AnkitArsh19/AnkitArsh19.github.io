@@ -92,7 +92,7 @@ const edgeMaterials = [
 
 const HOTZONES = [
   // Page 7 (Front face of page index 3) - Material index 4
-  { pageIndex: 3, faceIndex: 4, x: 79, y: 973, w: 247, h: 86, url: 'http://localhost:5174' },
+  { pageIndex: 3, faceIndex: 4, x: 79, y: 973, w: 247, h: 86, url: 'https://ankitarsh.me/pokemon' },
   
   // Page 5 (Front face of page index 2) - Material index 4
   { pageIndex: 2, faceIndex: 4, x: 140, y: 734, w: 272, h: 50, url: 'https://github.com/AnkitArsh19/yaplab-app' },

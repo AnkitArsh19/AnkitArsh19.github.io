@@ -76,7 +76,7 @@ export function Pokeball(props) {
       // Add interaction events!
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
       onPointerOut={() => setHovered(false)}
-      onClick={() => window.open('http://localhost:5174', '_blank')}
+      onClick={() => window.open('https://ankitarsh.me/pokemon', '_blank')}
     >
       {/* Nested group for animating so we don't overwrite the base rotation from Experience.jsx */}
       <group ref={jiggleGroup}>

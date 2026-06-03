@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useAtom } from 'jotai';
 import { easing } from 'maath';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, Suspense } from 'react';
 import { activeItemAtom, pageAtom } from '../store';
 import { Book } from './Book';
 import { Pokeball } from './Pokeball';
@@ -142,7 +142,9 @@ export const Experience = () => {
 
       <group ref={cardsHudRef}>
         <group ref={photocardsRig}>
-          <Photocards position={[0, 0, 0]} />
+          <Suspense fallback={null}>
+            <Photocards position={[0, 0, 0]} />
+          </Suspense>
         </group>
       </group>
 

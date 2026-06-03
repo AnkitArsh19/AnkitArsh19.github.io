@@ -319,7 +319,17 @@ body {
 .canvas-container {
   width: 100%;
   height: 100%;
-  position: relative;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+
+/* Force letterboxing on portrait mobile screens */
+@media (max-aspect-ratio: 4/3) {
+  .canvas-container {
+    height: auto;
+    aspect-ratio: 4/3;
+  }
 }
 
 /* ── Background Atmosphere ── */
