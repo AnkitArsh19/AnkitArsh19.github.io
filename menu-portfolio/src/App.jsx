@@ -27,13 +27,7 @@ function LoadingScreen({ started, setStarted }) {
     setFactIndex((prev) => (prev - 1 + loadingFacts.length) % loadingFacts.length);
   };
 
-  // Auto-cycle every 6 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextFact();
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
+  // Removed auto-cycle so user can read at their own pace
 
   // Keyboard controls for facts
   useEffect(() => {
@@ -123,21 +117,23 @@ function LoadingScreen({ started, setStarted }) {
               &#8592;
             </button>
 
-            <div style={{
-              color: 'var(--color-ink-muted)',
-              fontFamily: 'var(--font-body)',
-              fontSize: '1.05rem',
-              lineHeight: '1.6',
-              textAlign: 'center',
-              fontStyle: 'normal',
-              whiteSpace: 'pre-line',
-              minHeight: '150px',
-              display: 'flex',
-              alignItems: 'center',
-              flex: 1
-            }}>
-              {loadingFacts[factIndex]}
-            </div>
+            <div 
+              style={{
+                color: 'var(--color-ink-muted)',
+                fontFamily: 'var(--font-body)',
+                fontSize: '1.25rem',
+                lineHeight: '1.8',
+                textAlign: 'center',
+                fontStyle: 'normal',
+                whiteSpace: 'pre-line',
+                minHeight: '150px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                flex: 1
+              }}
+              dangerouslySetInnerHTML={{ __html: loadingFacts[factIndex] }}
+            />
 
             <button onClick={nextFact} style={{
               background: 'transparent',
@@ -166,10 +162,11 @@ function LoadingScreen({ started, setStarted }) {
             Press arrows to cycle
             {progress >= 100 && (
               <div style={{
-                marginTop: '0.5rem',
-                fontSize: '0.85rem',
+                marginTop: '1rem',
+                fontSize: '0.95rem',
                 fontStyle: 'italic',
-                opacity: 0.8,
+                opacity: 1,
+                color: 'var(--color-gold)',
                 textTransform: 'none',
                 letterSpacing: 'normal'
               }}>
