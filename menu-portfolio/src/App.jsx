@@ -7,13 +7,49 @@ import { Experience } from './components/Experience';
 import { UI } from './components/UI';
 import { bgmAudio } from './audio';
 import { activeItemAtom, galleryImages, pageAtom, pages, photoIndexAtom } from './store';
+import { loadingFacts } from './data/loadingFacts';
 
 function LoadingScreen({ started, setStarted }) {
   const { progress } = useProgress();
+  const [factIndex, setFactIndex] = useState(0);
+
+  // Pick a random fact on mount
+  useEffect(() => {
+    setFactIndex(Math.floor(Math.random() * loadingFacts.length));
+  }, []);
+
+  // Handlers for cycling facts
+  const nextFact = () => {
+    setFactIndex((prev) => (prev + 1) % loadingFacts.length);
+  };
+
+  const prevFact = () => {
+    setFactIndex((prev) => (prev - 1 + loadingFacts.length) % loadingFacts.length);
+  };
+
+  // Auto-cycle every 6 seconds if not fully loaded
+  useEffect(() => {
+    if (progress >= 100) return;
+    const interval = setInterval(() => {
+      nextFact();
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [progress]);
+
+  // Keyboard controls for facts
+  useEffect(() => {
+    if (progress >= 100) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') nextFact();
+      if (e.key === 'ArrowLeft') prevFact();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [progress]);
   
   return (
     <div className={`loading-screen ${started ? 'loaded' : ''}`}>
-      <div className="loading-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div className="loading-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '800px', width: '90%', padding: '0 20px' }}>
         <div style={{
           width: '120px',
           height: '1px',
@@ -23,15 +59,79 @@ function LoadingScreen({ started, setStarted }) {
         }} />
         
         {progress < 100 ? (
-          <div className="loading-text" style={{ 
-            color: 'var(--color-gold)',
-            fontFamily: 'var(--font-display-sc)',
-            letterSpacing: '0.3em',
-            fontSize: '0.8rem',
-            textAlign: 'center',
-            textTransform: 'uppercase'
-          }}>
-            LOADING {Math.round(progress)}%
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+            <div className="loading-text" style={{ 
+              color: 'var(--color-gold)',
+              fontFamily: 'var(--font-display-sc)',
+              letterSpacing: '0.2em',
+              fontSize: '0.9rem',
+              textAlign: 'center',
+              textTransform: 'uppercase',
+              marginBottom: '2rem'
+            }}>
+              Cooking textures for the book... please wait ({Math.round(progress)}%)
+            </div>
+
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between',
+              width: '100%',
+              gap: '1.5rem'
+            }}>
+              <button onClick={prevFact} style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--color-gold)',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                opacity: 0.6,
+                padding: '10px',
+                transition: 'opacity 0.2s ease',
+              }} onMouseOver={(e) => e.currentTarget.style.opacity = 1} onMouseOut={(e) => e.currentTarget.style.opacity = 0.6}>
+                &#8592;
+              </button>
+
+              <div style={{
+                color: 'var(--color-ink-muted)',
+                fontFamily: 'var(--font-body)',
+                fontSize: '1.05rem',
+                lineHeight: '1.6',
+                textAlign: 'center',
+                fontStyle: 'italic',
+                minHeight: '120px',
+                display: 'flex',
+                alignItems: 'center',
+                flex: 1
+              }}>
+                "{loadingFacts[factIndex]}"
+              </div>
+
+              <button onClick={nextFact} style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--color-gold)',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                opacity: 0.6,
+                padding: '10px',
+                transition: 'opacity 0.2s ease',
+              }} onMouseOver={(e) => e.currentTarget.style.opacity = 1} onMouseOut={(e) => e.currentTarget.style.opacity = 0.6}>
+                &#8594;
+              </button>
+            </div>
+            
+            <div style={{
+              marginTop: '1.5rem',
+              color: 'var(--color-ink-muted)',
+              fontFamily: 'var(--font-body)',
+              fontSize: '0.75rem',
+              opacity: 0.5,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em'
+            }}>
+              Press arrows to cycle
+            </div>
           </div>
         ) : (
           <>
