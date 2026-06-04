@@ -27,25 +27,23 @@ function LoadingScreen({ started, setStarted }) {
     setFactIndex((prev) => (prev - 1 + loadingFacts.length) % loadingFacts.length);
   };
 
-  // Auto-cycle every 6 seconds if not fully loaded
+  // Auto-cycle every 6 seconds
   useEffect(() => {
-    if (progress >= 100) return;
     const interval = setInterval(() => {
       nextFact();
     }, 6000);
     return () => clearInterval(interval);
-  }, [progress]);
+  }, []);
 
   // Keyboard controls for facts
   useEffect(() => {
-    if (progress >= 100) return;
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') nextFact();
       if (e.key === 'ArrowLeft') prevFact();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [progress]);
+  }, []);
   
   return (
     <div className={`loading-screen ${started ? 'loaded' : ''}`}>
@@ -58,8 +56,8 @@ function LoadingScreen({ started, setStarted }) {
           marginBottom: '2rem'
         }} />
         
-        {progress < 100 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+          {progress < 100 ? (
             <div className="loading-text" style={{ 
               color: 'var(--color-gold)',
               fontFamily: 'var(--font-display-sc)',
@@ -71,112 +69,115 @@ function LoadingScreen({ started, setStarted }) {
             }}>
               Cooking textures for the book... please wait ({Math.round(progress)}%)
             </div>
-
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'space-between',
-              width: '100%',
-              gap: '1.5rem'
-            }}>
-              <button onClick={prevFact} style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--color-gold)',
-                fontSize: '1.5rem',
-                cursor: 'pointer',
-                opacity: 0.6,
-                padding: '10px',
-                transition: 'opacity 0.2s ease',
-              }} onMouseOver={(e) => e.currentTarget.style.opacity = 1} onMouseOut={(e) => e.currentTarget.style.opacity = 0.6}>
-                &#8592;
-              </button>
-
-              <div style={{
-                color: 'var(--color-ink-muted)',
-                fontFamily: 'var(--font-body)',
-                fontSize: '1.05rem',
-                lineHeight: '1.6',
-                textAlign: 'center',
-                fontStyle: 'italic',
-                minHeight: '120px',
-                display: 'flex',
-                alignItems: 'center',
-                flex: 1
-              }}>
-                "{loadingFacts[factIndex]}"
-              </div>
-
-              <button onClick={nextFact} style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--color-gold)',
-                fontSize: '1.5rem',
-                cursor: 'pointer',
-                opacity: 0.6,
-                padding: '10px',
-                transition: 'opacity 0.2s ease',
-              }} onMouseOver={(e) => e.currentTarget.style.opacity = 1} onMouseOut={(e) => e.currentTarget.style.opacity = 0.6}>
-                &#8594;
+          ) : (
+            <div style={{ marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <button 
+                className="enter-button"
+                onClick={() => {
+                  setStarted(true);
+                  bgmAudio.play().catch(() => {});
+                }}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid var(--color-gold)',
+                  color: 'var(--color-gold)',
+                  padding: '1rem 2rem',
+                  fontFamily: 'var(--font-display-sc)',
+                  letterSpacing: '0.2em',
+                  fontSize: '0.9rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  textTransform: 'uppercase'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.background = 'rgba(184, 151, 105, 0.1)';
+                  e.currentTarget.style.boxShadow = '0 0 15px rgba(184, 151, 105, 0.3)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                CLICK TO ENTER
               </button>
             </div>
-            
-            <div style={{
-              marginTop: '1.5rem',
-              color: 'var(--color-ink-muted)',
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.75rem',
-              opacity: 0.5,
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em'
-            }}>
-              Press arrows to cycle
-            </div>
-          </div>
-        ) : (
-          <>
-            <button 
-              className="enter-button"
-              onClick={() => {
-                setStarted(true);
-                bgmAudio.play().catch(() => {});
-              }}
-              style={{
-                background: 'transparent',
-                border: '1px solid var(--color-gold)',
-                color: 'var(--color-gold)',
-                padding: '1rem 2rem',
-                fontFamily: 'var(--font-display-sc)',
-                letterSpacing: '0.2em',
-                fontSize: '0.9rem',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                textTransform: 'uppercase'
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.background = 'rgba(184, 151, 105, 0.1)';
-                e.currentTarget.style.boxShadow = '0 0 15px rgba(184, 151, 105, 0.3)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-            >
-              CLICK TO ENTER
+          )}
+
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'space-between',
+            width: '100%',
+            gap: '1.5rem'
+          }}>
+            <button onClick={prevFact} style={{
+              background: 'transparent',
+              border: 'none',
+              color: 'var(--color-gold)',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              opacity: 0.6,
+              padding: '10px',
+              transition: 'opacity 0.2s ease',
+            }} onMouseOver={(e) => e.currentTarget.style.opacity = 1} onMouseOut={(e) => e.currentTarget.style.opacity = 0.6}>
+              &#8592;
             </button>
+
             <div style={{
-              marginTop: '1.5rem',
               color: 'var(--color-ink-muted)',
               fontFamily: 'var(--font-body)',
-              fontSize: '0.85rem',
-              fontStyle: 'italic',
+              fontSize: '1.05rem',
+              lineHeight: '1.6',
               textAlign: 'center',
-              opacity: 0.8
+              fontStyle: 'normal',
+              whiteSpace: 'pre-line',
+              minHeight: '150px',
+              display: 'flex',
+              alignItems: 'center',
+              flex: 1
             }}>
-              For the full luxury experience, viewing on desktop is highly recommended.
+              {loadingFacts[factIndex]}
             </div>
-          </>
-        )}
+
+            <button onClick={nextFact} style={{
+              background: 'transparent',
+              border: 'none',
+              color: 'var(--color-gold)',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              opacity: 0.6,
+              padding: '10px',
+              transition: 'opacity 0.2s ease',
+            }} onMouseOver={(e) => e.currentTarget.style.opacity = 1} onMouseOut={(e) => e.currentTarget.style.opacity = 0.6}>
+              &#8594;
+            </button>
+          </div>
+          
+          <div style={{
+            marginTop: '1.5rem',
+            color: 'var(--color-ink-muted)',
+            fontFamily: 'var(--font-body)',
+            fontSize: '0.75rem',
+            opacity: 0.5,
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            textAlign: 'center'
+          }}>
+            Press arrows to cycle
+            {progress >= 100 && (
+              <div style={{
+                marginTop: '0.5rem',
+                fontSize: '0.85rem',
+                fontStyle: 'italic',
+                opacity: 0.8,
+                textTransform: 'none',
+                letterSpacing: 'normal'
+              }}>
+                For the full luxury experience, viewing on desktop is highly recommended.
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
