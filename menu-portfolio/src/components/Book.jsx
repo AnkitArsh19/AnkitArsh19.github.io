@@ -96,7 +96,7 @@ const HOTZONES = [
   
   // Page 5 (Front face of page index 2) - Material index 4
   { pageIndex: 2, faceIndex: 4, x: 140, y: 734, w: 272, h: 50, url: 'https://github.com/AnkitArsh19/yaplab-app' },
-  { pageIndex: 2, faceIndex: 4, x: 413, y: 738, w: 122, h: 42, url: 'https://yaplab.social' },
+  { pageIndex: 2, faceIndex: 4, x: 413, y: 738, w: 122, h: 42, url: 'https://yaplab.ankitarsh.me' },
 
   // Page 4 (Back face of page index 1) - Material index 5
   { pageIndex: 1, faceIndex: 5, x: 219, y: 1386, w: 319, h: 41, url: 'https://github.com/AnkitArsh19/crescendo' },
